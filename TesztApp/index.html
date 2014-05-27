@@ -26,6 +26,9 @@
         <div data-role="content">
             <h1>Bejelentkezés</h1>
             <p>
+                Tárolt token: <input type="text" id="text_token" />
+                <input type="button" value="Ment" onclick="javascript: saveToken();" />
+                <input type="button" value="Betölt" onclick="javascript: loadToken();" />
                 Telefon: <input type="text" id="text_phone" /><br />
                 Jelszó: <input type="password" id="text_password" /><br />
                 <input type="button" id="button_login" value="Bejelentkezés" onclick="javascript: testAjax();" />
@@ -58,6 +61,14 @@
         document.addEventListener('deviceready', function () {
             navigator.splashscreen.hide();
         }, false);
+        
+        function loadToken() {
+            var value = window.localStorage.getItem("mytoken");
+			$("#text_token").val(value);
+        }
+        function saveToken() {
+	        window.localStorage.setItem("mytoken", $("#text_token").val());
+        }
         
         function testAjax() {
 			       var request = $.ajax({
