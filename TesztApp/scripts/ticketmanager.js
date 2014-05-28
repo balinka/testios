@@ -25,7 +25,7 @@ function TicketManager() {
   };
   
   this.redirectToHls = function() { 
-    if (manager.hlsurl != '') { document.location = manager.hlsurl; }
+    if (manager.hlsurl != '') { window.open(manager.hlsurl, '_system', 'location=no'); }
   };
   
   this.checkChannels = function() {
@@ -131,6 +131,7 @@ function TicketManager() {
     if ($('#text_adultcode').val() == manager.adultcode) { 
       manager.redirectToHls();
       $('#span_adulterr').hide();
+      manager.showContent();
       return; 
     }
     $('#span_adulterr').fadeIn();
