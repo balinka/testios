@@ -25,7 +25,10 @@ function TicketManager() {
   };
   
   this.redirectToHls = function() { 
-    if (manager.hlsurl != '') { window.open(manager.hlsurl, '_system', 'location=no'); }
+    if (manager.hlsurl != '') { 
+    	window.localStorage.setItem("ittott_hlsurl", manager.hlsurl);      
+        window.open('video.html', '_self', 'location=no'); 
+    }
   };
   
   this.checkChannels = function() {
@@ -146,6 +149,16 @@ function TicketManager() {
   this.saveToken = function(token) {
     window.localStorage.setItem("ittott_token", token);      
     manager.token = token;
+  };
+    
+  this.setVideo = function() {
+    var hlsurl = window.localStorage.getItem("ittott_hlsurl");
+    if ((manager.token == '') || (!hlsurl)) {
+ 	  window.open('index.html', '_self', 'location=no');            
+      return;
+    }
+    $('#mainvideo').attr('src', hlsurl);
+    $('#mainvideo').play();
   };
 }
  
