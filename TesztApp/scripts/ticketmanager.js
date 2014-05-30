@@ -28,7 +28,7 @@ function TicketManager() {
     if (manager.hlsurl != '') { 
     	//window.localStorage.setItem("ittott_hlsurl", manager.hlsurl);      
         //window.open('video.html', '_self', 'location=no'); 
-        window.open(manager.hlsurl, '_blank', 'location=no'); 
+        window.open(manager.hlsurl, '_self', 'location=no'); 
     }
   };
   
