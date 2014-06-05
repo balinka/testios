@@ -5,16 +5,23 @@ function TicketManager() {
   this.token = window.localStorage.getItem("ittott_token");
   this.hlsurl = '';
   this.adultcode = '';
+  this.preventLoginRedirect = false;
   
   this.showLogin = function() {
-    $.mobile.changePage( "index.html", { transition: "slideup"} );  
+    if (!window.manager.preventLoginRedirect) {
+      window.open('index.html', '_self', 'location=no,transitionstyle=fliphorizontal');   
+    }
+    //window.open('index.html', '_self', 'location=no'); 
+    //$.mobile.changePage( "index.html", { transition: "slideup"} );  
+      //} catch (e) { alert(e);}
     /*$('#content_div').hide();
     $('#adultcode_div').hide();
     $('#login_div').show();*/
   };
   
   this.showContent = function() {
-    $.mobile.changePage( "channels.html", { transition: "slideup"} );  
+    //$.mobile.changePage( "channels.html", { transition: "slideup"} );  
+    window.open('channels.html', '_self', 'location=no,transitionstyle=fliphorizontal'); 
     /*$('#login_div').hide();
     $('#adultcode_div').hide();
     $('#content_div').show();*/
@@ -27,22 +34,51 @@ function TicketManager() {
   };
   
   this.redirectToHls = function() { 
-    if (manager.hlsurl != '') { 
+    if (window.manager.hlsurl != '') { 
     	//window.localStorage.setItem("ittott_hlsurl", manager.hlsurl);      
         //window.open('video.html', '_self', 'location=no'); 
-        window.open(manager.hlsurl, '_blank', 'location=yes'); 
+        window.open(window.manager.hlsurl, '_blank', 'location=yes'); 
     }
   };
   
-  this.checkChannels = function() {
-    if (manager.token == '')  {
-      manager.showLogin();
+  this.checkToken = function() {
+    if (window.manager.token == '')  {
+      window.manager.showLogin();
       return;
     }
     
     var data = { 
       do : 'getChannelsList',
-      token : manager.token
+      token : window.manager.token
+    };
+    $.ajax({
+      url: "http://ittott.tv/api",
+      type: "POST",
+      data: data,
+      dataType: "json",
+      success: function(i){
+        if (i.tokenok == '1') {
+          
+        }
+        else {
+          window.manager.showLogin();
+        }
+      },
+      error: function(e1, er, err) {
+        window.manager.showLogin();
+      }
+    });
+  };  
+    
+  this.checkChannels = function() {
+    if (window.manager.token == '')  {
+      window.manager.showLogin();
+      return;
+    }
+    
+    var data = { 
+      do : 'getChannelsList',
+      token : window.manager.token
     };
     $.ajax({
       url: "http://ittott.tv/api",
@@ -54,31 +90,31 @@ function TicketManager() {
           html = '';
           for (key in i.userchannels) {
             channel = i.userchannels[key];
-            html += '<input type="button" onclick="javascript: manager.playChannel(\'' + channel.id + '\')" value="' + channel.name + '" /><br />';
+            html += '<input type="button" onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')" value="' + channel.name + '" /><br />';
           }
           $('#channels_div').html(html);
-          manager.showContent();
+          window.manager.showContent();
         }
         else {
-          manager.showLogin();
+          window.manager.showLogin();
         }
       },
       error: function(e1, er, err) {
-        manager.showLogin();
+        window.manager.showLogin();
       }
     });
   };
   
   this.playChannel = function(channelid) {
-    if (manager.token == '')  {
-      manager.showLogin();
+    if (window.manager.token == '')  {
+      window.manager.showLogin();
       return;
     }
     
     var data = { 
       do : 'getHls',
       channelid : channelid,
-      token : manager.token
+      token : window.manager.token
     };
     $.ajax({
       url: "http://ittott.tv/api",
@@ -87,27 +123,26 @@ function TicketManager() {
       dataType: "json",
       success: function(i){
         if (i.tokenok == '1') {
-          manager.hlsurl = i.hls;
+          window.manager.hlsurl = i.hls;
           if (i.adultcode != '') {
-            manager.adultcode = i.adultcode;
-            manager.showAdultCode();
+            window.manager.adultcode = i.adultcode;
+            window.manager.showAdultCode();
           }
           else {
-            manager.redirectToHls();
+            window.manager.redirectToHls();
           }
         }
         else {
-          manager.showLogin();
+          window.manager.showLogin();
         }
       },
       error: function(e1, er, err) {
-        manager.showLogin();
+        window.manager.showLogin();
       }
     });
   };
   
   this.doLogin = function() {
-      alert(123);
     var data = { 
       do : 'userLogin',
       identifier : $('#text_telephone').val(),
@@ -120,9 +155,10 @@ function TicketManager() {
       dataType: "json",
       success: function(i){
         if (i.loginok == '1') {
-          manager.saveToken (i.newtoken);
+          window.manager.saveToken (i.newtoken);
           $('#span_loginerr').hide();
-          manager.checkChannels();
+          //window.manager.checkChannels();
+          window.manager.showContent();
         }
         else {
           $('#span_loginerr').fadeIn();
@@ -135,29 +171,30 @@ function TicketManager() {
   };
    
   this.checkAdultCode = function() {
-    if ($('#text_adultcode').val() == manager.adultcode) { 
-      manager.redirectToHls();
+    if ($('#text_adultcode').val() == window.manager.adultcode) { 
+      window.manager.redirectToHls();
       $('#span_adulterr').hide();
-      manager.showContent();
+      window.manager.showContent();
       return; 
     }
     $('#span_adulterr').fadeIn();
   };
   
   this.logOut = function() {
-    manager.saveToken('');
-    $('#text_telephone, #text_password').val('');
-    manager.showLogin();
+    $('.buttonLogout').html('aaaaa');
+    window.manager.saveToken('');
+    //$('#text_telephone, #text_password').val('');
+    window.manager.showLogin();
   };
     
   this.saveToken = function(token) {
     window.localStorage.setItem("ittott_token", token);      
-    manager.token = token;
+    window.manager.token = token;
   };
     
   this.setVideo = function() {
     var hlsurl = window.localStorage.getItem("ittott_hlsurl");
-    if ((manager.token == '') || (!hlsurl)) {
+    if ((window.manager.token == '') || (!hlsurl)) {
  	  window.open('index.html', '_self', 'location=no');            
       return;
     }

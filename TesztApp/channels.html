@@ -115,9 +115,9 @@
     </section>
     
     <footer>
-      <a class="button buttonRefresh" href="#" title=""></a>
-      <a class="button buttonChannelsView" href="#" title=""></a>
-      <a class="button buttonLogout" href="#" title=""></a>
+      <a class="button buttonRefresh" href="#" title="">refresh</a>
+      <a class="button buttonChannelsView" href="#" title="">program</a>
+        <a class="button buttonLogout" href="#" title="" onclick="javascript: window.manager.logOut();">logout</a>
     </footer>
   </div>
   <!--chanel page ends here-->
@@ -128,14 +128,12 @@
         document.addEventListener('deviceready', function () {
             navigator.splashscreen.hide();
         }, false);
-        window.localStorage.setItem("ittott_token", "");      
         
-        var manager = new TicketManager();
-        
-
-        manager.checkChannels();    
-        
-        $('#button_login').click(manager.doLogin);
+        $(document).ready(function(){
+            window.manager = new TicketManager();
+            window.manager.checkChannels();    
+            $('.buttonLogout').click(window.manager.logOut);
+        }
 
     </script>
    
