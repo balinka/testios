@@ -7,15 +7,17 @@ function TicketManager() {
   this.adultcode = '';
   
   this.showLogin = function() {
-    $('#content_div').hide();
+    $.mobile.changePage( "index.html", { transition: "slideup"} );  
+    /*$('#content_div').hide();
     $('#adultcode_div').hide();
-    $('#login_div').show();
+    $('#login_div').show();*/
   };
   
   this.showContent = function() {
-    $('#login_div').hide();
+    $.mobile.changePage( "channels.html", { transition: "slideup"} );  
+    /*$('#login_div').hide();
     $('#adultcode_div').hide();
-    $('#content_div').show();
+    $('#content_div').show();*/
   };
   
   this.showAdultCode = function() {
