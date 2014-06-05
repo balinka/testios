@@ -1,0 +1,160 @@
+/*----------GENERAL START----------*/
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, a, input, form, label, textarea, img {margin: 0; padding: 0; border: 0;}
+ 
+li {list-style: none;}
+
+.clear {float:none; clear: both;}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0px;
+  clear: both;
+  visibility: hidden;  
+}
+
+.nomargin {margin: 0 !important;}
+.nopadding {padding: 0 !important;}
+.noborder {border: 0 !important;}
+.nobg {background: none !important;}
+
+.alignLeft {text-align: left !important;}
+.alignRight {text-align: right !important;}
+.alignCenter {text-align: center !important;}
+.alignJustify {text-align: justify !important;}
+
+.floatLeft {float: left !important;}
+.floatRight {float: right !important;}
+.floatNone {float: none !important;}
+
+input, textarea, select {
+  color: black;
+  font-family: arial; font-size: 12px;
+}
+input:focus {outline: none;}
+.submit input, input.submit {cursor: pointer;}
+
+
+body {
+  background: white;
+  color: black;
+  font-family: arial; font-size: 12px;
+}
+
+a {
+  color: black;
+  outline: none;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5 {font-weight: bold;}
+h2, h3, h4, h5 {color: black;}
+
+h1 {font-size: 38px;}
+h2 {font-size: 18px;}
+h3 {font-size: 16px;}
+h4 {font-size: 14px;}
+
+p, li, span, a {line-height: 19px;}
+/*----------GENERAL END----------*/
+
+
+/*----------LOGIN START----------*/
+.pageLogin {
+  background: #FBE31C;
+  padding: 30px 0; 
+  text-align: center; 
+}
+
+.logo {
+  background: url(images/logo.png) no-repeat;
+  margin: 0 auto 30px auto;
+  width: 263px;  height: 56px;
+}
+
+.form {padding: 0 10px;}
+
+.form input {
+  border: 1px solid #cecece;
+  display: block;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  width: 100%;  height: 30px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;        
+}
+.form .submit {
+  background: black;
+  border: 0;
+  color: white;
+  font-size: 16px;
+  height: 40px;
+  margin-bottom: 30px;
+}
+/*----------LOGIN END----------*/
+
+
+/*----------PAGE CHANNELS START----------*/
+header, footer {
+  background: #FBE31C;
+  height: 60px;
+  padding: 0 10px;
+}
+
+header p {
+  font-size: 16px;
+  line-height: 60px;
+}
+
+.pageChanels li {
+  padding: 10px;
+  background-image: -webkit-gradient(
+  	linear,
+  	left top,
+  	left bottom,
+  	color-stop(0, #E0E0E0),
+  	color-stop(1, #B0B0B0)
+  );
+  background-image: -o-linear-gradient(bottom, #E0E0E0 0%, #B0B0B0 100%);
+  background-image: -moz-linear-gradient(bottom, #E0E0E0 0%, #B0B0B0 100%);
+  background-image: -webkit-linear-gradient(bottom, #E0E0E0 0%, #B0B0B0 100%);
+  background-image: -ms-linear-gradient(bottom, #E0E0E0 0%, #B0B0B0 100%);
+  background-image: linear-gradient(to bottom, #E0E0E0 0%, #B0B0B0 100%);
+}
+.pageChanels li img, .pageChanels li p {
+  display: inline-block;
+  vertical-align: middle;
+}
+.pageChanels li p {font-size: 16px;  font-weight: bold;}
+.pageChanels li span {font-size: 12px;  font-weight: normal;}
+
+.tabControl .active {font-weight: bold;}
+
+.tab {display: none;}
+.tab.active {display: block;}
+/*----------PAGE CHANNELS END----------*/
+
+
+/*----------PAGE CHANNELS VIEW START----------*/
+.pageChanels.view .tabControl {background: black;} 
+.pageChanels.view .tabControl a {color: white;}
+
+.pageChanels.view li {
+  background: white;
+  border-bottom: 1px solid #cecece;  
+}
+
+
+.date {
+  background: #A4A4A4;
+  color: white;
+  display: inline-block;
+  padding: 2px 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;  
+}
+/*----------PAGE CHANNELS VIEW END----------*/

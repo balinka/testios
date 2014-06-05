@@ -105,6 +105,7 @@ function TicketManager() {
   };
   
   this.doLogin = function() {
+      alert(123);
     var data = { 
       do : 'userLogin',
       identifier : $('#text_telephone').val(),
