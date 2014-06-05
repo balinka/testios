@@ -24,30 +24,24 @@
 </head>
 
 <body>
-  
-    <!--chanel page starts here-->
-  <div class="page pageChanels">
-    <header>
-      <p>Csatornák</p>
-    </header>
+  <!--login page starts here-->
+  <div class="page pageLogin">
     
-    <section class="main">
-      <div class="tabControl">
-        
-      </div>
-      <div id="channel_div">
-          
-      </div>
+    
+    <div class="form">
       
-    </section>
-    
-    <footer>
-      <a class="button buttonRefresh" href="#" title="">refresh</a>
-      <a class="button buttonChannelsView" href="#" title="">program</a>
-        <a class="button buttonLogout" href="#" title="">logout</a>
-    </footer>
+        <input type="text" placeholder="Gyerekzár kódja" id="text_adultcode"  />
+        
+        <span id="span_adulterr" style="display: none;">Nem jó kisfiam!</span>
+        <input class="submit" type="button" id="button_checkadult" value="Nézem" />
+        <input class="submit" type="button" id="button_backadult" value="Vissza" />
+          
+          
+      
+    </div>
   </div>
-  <!--chanel page ends here-->
+  <!--login page ends here-->
+    
   
 
     
@@ -56,16 +50,15 @@
             navigator.splashscreen.hide();
         }, false);
         
+        
         $(document).ready(function(){
-
             window.manager = new TicketManager();
             window.manager.token = window.localStorage.getItem("ittott_token");
-            window.manager.checkChannels();    
-            $('.buttonLogout').click(window.manager.logOut);
-            $('.buttonChannelsView').click(window.manager.showTvGuide);
-            $('.buttonRefresh').click(window.manager.showContent);
-            
-            
+            window.manager.adultcode = window.localStorage.getItem("ittott_adultcode");             
+            window.manager.hlsurl = window.localStorage.getItem("ittott_adulthls");             
+            window.manager.checkToken();    
+            $('#button_checkadult').click(window.manager.checkAdultCode);
+        	$('#button_backadult').click(window.manager.showContent);
         });
 
     </script>

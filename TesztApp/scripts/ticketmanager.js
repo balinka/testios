@@ -28,16 +28,21 @@ function TicketManager() {
   };
   
   this.showAdultCode = function() {
-    $('#login_div').hide();
+    window.open('lock.html', '_self', 'location=no,transitionstyle=fliphorizontal');     
+    /*$('#login_div').hide();
     $('#content_div').hide();
-    $('#adultcode_div').show();
+    $('#adultcode_div').show();*/
+  };
+    
+  this.showTvGuide = function() {
+    window.open('tvguide.html', '_self', 'location=no,transitionstyle=fliphorizontal'); 
   };
   
   this.redirectToHls = function() { 
     if (window.manager.hlsurl != '') { 
     	//window.localStorage.setItem("ittott_hlsurl", manager.hlsurl);      
         //window.open('video.html', '_self', 'location=no'); 
-        window.open(window.manager.hlsurl, '_blank', 'location=yes'); 
+        window.open(window.manager.hlsurl, '_blank', 'location=yes,transitionstyle=fliphorizontal'); 
     }
   };
   
@@ -87,12 +92,50 @@ function TicketManager() {
       dataType: "json",
       success: function(i){
         if (i.tokenok == '1') {
-          html = '';
+          channelhtml = '<div class="tab active"><ul>';
           for (key in i.userchannels) {
             channel = i.userchannels[key];
-            html += '<input type="button" onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')" value="' + channel.name + '" /><br />';
+            channelhtml += '<li onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')">';
+            channelhtml += '<img src="' + channel.img + '" />';
+            channelhtml += '<p>' + channel.name + '<br /><span>' + channel.theme + '</span></p>';
+            channelhtml += '</li>';  
           }
-          $('#channels_div').html(html);
+          channelhtml += '</ul></div>';
+          
+
+		  themehtml = '';          
+          var first = true;
+          for (key in i.themes) {
+            theme = i.themes[key];
+            var extra = '';
+            if (first) { extra = 'class="active"'; }
+            themehtml += '<a ' + extra + ' href="#" title="">' + theme.theme + '</a>';  
+            first = false;
+          
+            channelhtml += '<div class="tab active"><ul>';  
+            for (chkey in theme.channels) {
+              channel = theme.channels[chkey];
+              channelhtml += '<li onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')">';
+              channelhtml += '<img src="' + channel.img + '" />';
+              channelhtml += '<p>' + channel.name + '<br /><span>' + channel.theme + '</span></p>';
+              channelhtml += '</li>';  
+            }   
+            channelhtml += '</ul></div>';
+          }
+          
+          $('.tabControl').html(themehtml);
+          $('#channel_div').html(channelhtml);
+            
+          $(".tabControl a").click(function(){
+    	    number = $(this).prevAll("a").length;
+    
+    		$(".tabControl a").removeClass("active");
+    		$(this).addClass("active");
+    		$(".tab").hide();
+    		$(".tab:eq("+number+")").show();
+        
+    		return false;
+  		  });
         }
         else {
           window.manager.showLogin();
@@ -124,6 +167,8 @@ function TicketManager() {
         if (i.tokenok == '1') {
           window.manager.hlsurl = i.hls;
           if (i.adultcode != '') {
+    		window.localStorage.setItem("ittott_adultcode", i.adultcode);              
+            window.localStorage.setItem("ittott_adulthls", i.hls);              
             window.manager.adultcode = i.adultcode;
             window.manager.showAdultCode();
           }
@@ -172,8 +217,8 @@ function TicketManager() {
   this.checkAdultCode = function() {
     if ($('#text_adultcode').val() == window.manager.adultcode) { 
       window.manager.redirectToHls();
-      $('#span_adulterr').hide();
-      window.manager.showContent();
+      //$('#span_adulterr').hide();
+      //window.manager.showContent();
       return; 
     }
     $('#span_adulterr').fadeIn();
@@ -200,5 +245,74 @@ function TicketManager() {
     $('#mainvideo').attr('src', hlsurl);
     $('#mainvideo').play();
   };
+    
+  this.getTvGuide = function() {
+    day = $('#select_day').val();
+     
+    var data = { 
+      do : 'getTvGuide',
+      token : window.manager.token,
+      day : day
+    };
+      
+      
+    $.ajax({
+      url: "http://ittott.tv/api",
+      type: "POST",
+      data: data,
+      dataType: "json",
+      success: function(i){
+        if (i.tokenok == '1') {
+          var channelhtml = '';
+          var programhtml = '';  
+          var first = true;
+          for (key in i.tvguide) {
+            extra = '';
+            if (first) { extra = 'class="active"'; }
+            
+            channelhtml += '<a ' + extra + ' href="#" title="">' + i.tvguide[key]['channel'] + '</a>';
+            
+            extra = '';
+            if (first) { extra = ' active'; }
+            programhtml += '<div class="tab' + extra + '"><ul>';  
+            for (chkey in i.tvguide[key]['programs']) {
+              var program = i.tvguide[key]['programs'][chkey];
+              programhtml += '<li><p><span class="date">' + program['starttime'] + '</span>' + program['title'] + '</p></li>'; 
+            }
+            programhtml += '</ul></div>';  
+              
+            first = false;  
+          }
+            
+            
+          $('.tabControl').html(channelhtml);
+          $('#channel_div').html(programhtml);
+            
+          $(".tabControl a").click(function(){
+    	    number = $(this).prevAll("a").length;
+    
+    		$(".tabControl a").removeClass("active");
+    		$(this).addClass("active");
+    		$(".tab").hide();
+    		$(".tab:eq("+number+")").show();
+        
+    		return false;
+  		  });
+            
+        }
+        else {
+          window.manager.showLogin();
+        }
+      },
+      error: function(e1, er, err) {
+        window.manager.showLogin();
+      }
+    });  
+
+    
+    
+  };
+  
+  
 }
  

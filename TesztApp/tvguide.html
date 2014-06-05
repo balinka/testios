@@ -24,13 +24,17 @@
 </head>
 
 <body>
-  
-    <!--chanel page starts here-->
-  <div class="page pageChanels">
+ 
+<!--chanel page starts here-->
+  <div class="page pageChanels view">
     <header>
-      <p>Csatornák</p>
+      <select data-role="none" id="select_day">
+        <option selected="selected" value="0">ma</option>
+        <option value="1">holnap</option>
+        <option value="2">holnapután</option>
+      </select>
     </header>
-    
+      
     <section class="main">
       <div class="tabControl">
         
@@ -41,14 +45,13 @@
       
     </section>
     
-    <footer>
+        <footer>
       <a class="button buttonRefresh" href="#" title="">refresh</a>
-      <a class="button buttonChannelsView" href="#" title="">program</a>
-        <a class="button buttonLogout" href="#" title="">logout</a>
+      <a class="button buttonChannelsList" href="#" title="">channels</a>
     </footer>
   </div>
   <!--chanel page ends here-->
-  
+
 
     
     <script type="text/javascript">
@@ -60,10 +63,11 @@
 
             window.manager = new TicketManager();
             window.manager.token = window.localStorage.getItem("ittott_token");
-            window.manager.checkChannels();    
-            $('.buttonLogout').click(window.manager.logOut);
-            $('.buttonChannelsView').click(window.manager.showTvGuide);
-            $('.buttonRefresh').click(window.manager.showContent);
+            window.manager.getTvGuide();    
+            $('.buttonChannelsList').click(window.manager.showContent);
+            $('.buttonRefresh').click(window.manager.showTvGuide);
+            $('#select_day').change(window.manager.getTvGuide);
+            
             
             
         });
