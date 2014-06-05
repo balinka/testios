@@ -2,7 +2,7 @@ function TicketManager() {
 
 
   
-  this.token = window.localStorage.getItem("ittott_token");
+  this.token = '';
   this.hlsurl = '';
   this.adultcode = '';
   this.preventLoginRedirect = false;
@@ -93,7 +93,6 @@ function TicketManager() {
             html += '<input type="button" onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')" value="' + channel.name + '" /><br />';
           }
           $('#channels_div').html(html);
-          window.manager.showContent();
         }
         else {
           window.manager.showLogin();

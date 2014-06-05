@@ -117,7 +117,7 @@
     <footer>
       <a class="button buttonRefresh" href="#" title="">refresh</a>
       <a class="button buttonChannelsView" href="#" title="">program</a>
-        <a class="button buttonLogout" href="#" title="" onclick="javascript: window.manager.logOut();">logout</a>
+        <a class="button buttonLogout" href="#" title="">logout</a>
     </footer>
   </div>
   <!--chanel page ends here-->
@@ -130,10 +130,15 @@
         }, false);
         
         $(document).ready(function(){
+
             window.manager = new TicketManager();
+            window.manager.token = window.localStorage.getItem("ittott_token");
             window.manager.checkChannels();    
             $('.buttonLogout').click(window.manager.logOut);
-        }
+            
+            
+            
+        });
 
     </script>
    
