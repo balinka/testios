@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
 	<title></title>
-  
-  <link href="style.css" type="text/css" rel="stylesheet" />
+  <link href="jquery-mobile/styles/jquery.mobile-1.3.1.min.css" rel="stylesheet" />
+  <!--<link href="style.css" type="text/css" rel="stylesheet" />-->
   <script src="cordova.js" type="text/javascript"></script>
   <script src="jquery-mobile/js/jquery-1.9.1.min.js" type="text/javascript"></script>
   <script src="jquery-mobile/js/jquery.mobile-1.3.1.min.js" type="text/javascript"></script>
@@ -24,28 +24,43 @@
 </head>
 
 <body>
+    
+    <div data-role="header" data-position="fixed">
+    	<h6 style="text-align:left; margin-left:10px;">Csatornák</h6>
+        <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+        	<select id="select_theme" data-mini="true" data-inline="true"></select>
+        </div>
+    </div>  
   
-    <!--chanel page starts here-->
   <div class="page pageChanels">
-    <header>
-      <p>Csatornák</p>
-    </header>
+    <!--chanel page starts here-->
+    
+      
+      
     
     <section class="main">
-      <div class="tabControl">
+        <ul data-role="listview" id="listview_main">
+    
+</ul>
+      <!--<div class="tabControl">
         
       </div>
+-->
       <div id="channel_div">
           
       </div>
       
     </section>
     
-    <footer>
-      <a class="button buttonRefresh" href="#" title="">refresh</a>
-      <a class="button buttonChannelsView" href="#" title="">program</a>
-        <a class="button buttonLogout" href="#" title="">logout</a>
-    </footer>
+    <div data-role="footer" data-position="fixed">
+        <div data-role="navbar">
+            <ul>
+                <li><a class="buttonRefresh" href="#" data-icon="refresh">Frissítés</a></li>
+                <li><a class="buttonChannelsView" href="#" data-icon="refresh">Műsor</a></li>
+                <li><a class="buttonLogout" href="#" data-icon="power">Kilépés</a></li>
+            </ul>
+    </div>
+      
   </div>
   <!--chanel page ends here-->
   
@@ -64,7 +79,7 @@
             $('.buttonLogout').click(window.manager.logOut);
             $('.buttonChannelsView').click(window.manager.showTvGuide);
             $('.buttonRefresh').click(window.manager.showContent);
-            
+            $('#select_theme').change(window.manager.changeChannelDiv);
             
         });
 

@@ -1,7 +1,7 @@
 function TicketManager() {
 
 
-  
+  this.savedData = '';  
   this.token = '';
   this.hlsurl = '';
   this.adultcode = '';
@@ -42,7 +42,7 @@ function TicketManager() {
     if (window.manager.hlsurl != '') { 
     	//window.localStorage.setItem("ittott_hlsurl", manager.hlsurl);      
         //window.open('video.html', '_self', 'location=no'); 
-        window.open(window.manager.hlsurl, '_blank', 'location=yes,transitionstyle=fliphorizontal'); 
+        window.open(window.manager.hlsurl, '_blank', 'location=no,transitionstyle=fliphorizontal'); 
     }
   };
   
@@ -75,6 +75,28 @@ function TicketManager() {
     });
   };  
     
+    this.changeChannelDiv = function() {
+      /*$('.tab').hide();
+      $('#tab'+$('#select_theme').val()).show();*/
+      for (key in window.manager.savedData.themes) {  
+        theme =  window.manager.savedData.themes[key];
+        if (key != +$('#select_theme').val()) { continue; }
+        channelhtml = '';
+        for (chkey in theme.channels) {
+          channel = theme.channels[chkey];
+          //channelhtml += '<li onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')">';
+          channelhtml += '<li><a href="#" onclick="javascript: window.manager.playChannel(\'' + channel.id + '\'); return false;">';
+          channelhtml += '<img src="' + channel.img + '" />';
+          channelhtml += '<p>' + channel.name + '<br /><span>' + channel.theme + '</span></p>';
+          channelhtml += '</a></li>';  
+          //channelhtml += '</li>';  
+        }   
+        $('#listview_main').html(channelhtml);
+        $("#listview_main").listview("refresh");   
+      }
+        
+    }
+    
   this.checkChannels = function() {
     if (window.manager.token == '')  {
       window.manager.showLogin();
@@ -92,7 +114,7 @@ function TicketManager() {
       dataType: "json",
       success: function(i){
         if (i.tokenok == '1') {
-          channelhtml = '<div class="tab active"><ul>';
+          /*channelhtml = '<div id="tab0" class="tab active"><ul data-role="listview">';
           for (key in i.userchannels) {
             channel = i.userchannels[key];
             channelhtml += '<li onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')">';
@@ -103,16 +125,31 @@ function TicketManager() {
           channelhtml += '</ul></div>';
           
 
-		  themehtml = '';          
-          var first = true;
+		  themehtml = '';          */
+          window.manager.savedData = i;  
+          var first = true; var counter=0; var tmp = 0;
           for (key in i.themes) {
+            counter++;
             theme = i.themes[key];
+            /*
             var extra = '';
             if (first) { extra = 'class="active"'; }
-            themehtml += '<a ' + extra + ' href="#" title="">' + theme.theme + '</a>';  
+            themehtml += '<a ' + extra + ' href="#" title="">' + theme.theme + '</a>';  */
+            if (first) { tmp = key; }
+            $('#select_theme').append($('<option>', {
+                value: key,
+                text: theme.theme
+            }));  
+          }    
+          $('#select_theme').val('0');
+          $('#select_theme').selectmenu("refresh");  
+          window.manager.changeChannelDiv();  
+          return;  
+              
+			/*              
             first = false;
           
-            channelhtml += '<div class="tab active"><ul>';  
+            channelhtml += '<div id="tab' + counter + '" class="tab" style="display: none;"><ul data-role="listview">';  
             for (chkey in theme.channels) {
               channel = theme.channels[chkey];
               channelhtml += '<li onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')">';
@@ -121,12 +158,16 @@ function TicketManager() {
               channelhtml += '</li>';  
             }   
             channelhtml += '</ul></div>';
-          }
+          }  
+            */
           
-          $('.tabControl').html(themehtml);
+          
+          /*$('.tabControl').html(themehtml);
           $('#channel_div').html(channelhtml);
             
-          $(".tabControl a").click(function(){
+          $("ul").listview("refresh");  */
+            
+          /*$(".tabControl a").click(function(){
     	    number = $(this).prevAll("a").length;
     
     		$(".tabControl a").removeClass("active");
@@ -135,7 +176,7 @@ function TicketManager() {
     		$(".tab:eq("+number+")").show();
         
     		return false;
-  		  });
+  		  });*/
         }
         else {
           window.manager.showLogin();
@@ -170,7 +211,8 @@ function TicketManager() {
     		window.localStorage.setItem("ittott_adultcode", i.adultcode);              
             window.localStorage.setItem("ittott_adulthls", i.hls);              
             window.manager.adultcode = i.adultcode;
-            window.manager.showAdultCode();
+            //window.manager.showAdultCode();
+            $.mobile.changePage( "lock.html", { role: "dialog" } );  
           }
           else {
             window.manager.redirectToHls();
@@ -225,7 +267,6 @@ function TicketManager() {
   };
   
   this.logOut = function() {
-    $('.buttonLogout').html('aaaaa');
     window.manager.saveToken('');
     //$('#text_telephone, #text_password').val('');
     window.manager.showLogin();
