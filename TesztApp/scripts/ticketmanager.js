@@ -6,7 +6,17 @@ function TicketManager() {
   this.hlsurl = '';
   this.adultcode = '';
   this.preventLoginRedirect = false;
-  
+
+  this.myAlert = function(s) {
+      navigator.notification.alert(
+            s,  // message
+            '',         // callback
+            'Info',            // title
+            'Ok'                  // buttonName
+      );
+      //alert (s);
+  }  
+    
   this.showLogin = function() {
     if (!window.manager.preventLoginRedirect) {
       window.open('index.html', '_self', 'location=no,transitionstyle=fliphorizontal');   
@@ -42,7 +52,7 @@ function TicketManager() {
     if (window.manager.hlsurl != '') { 
     	//window.localStorage.setItem("ittott_hlsurl", manager.hlsurl);      
         //window.open('video.html', '_self', 'location=no'); 
-        window.open(window.manager.hlsurl, '_blank', 'location=no,transitionstyle=fliphorizontal'); 
+        window.open(window.manager.hlsurl, '_blank', 'location=no,transitionstyle=fliphorizontal,closebuttoncaption=Vissza'); 
     }
   };
   
@@ -84,8 +94,16 @@ function TicketManager() {
         channelhtml = '';
         for (chkey in theme.channels) {
           channel = theme.channels[chkey];
+          
+          var onClick = 'onclick="javascript: window.manager.myAlert(\'Úgy tűnik, hogy bla blablabla bla blablabla.\'); return false;"';  
+          var liClass = 'class="locked"';
+          if (channel['access'] == '1') {
+            onClick = 'onclick="javascript: window.manager.playChannel(\'' + channel.id + '\'); return false;"';       
+            liClass = '';  
+          }
+            
           //channelhtml += '<li onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')">';
-          channelhtml += '<li><a href="#" onclick="javascript: window.manager.playChannel(\'' + channel.id + '\'); return false;">';
+          channelhtml += '<li><a href="#" ' + liClass + ' ' + onClick + '>';
           channelhtml += '<img src="' + channel.img + '" />';
           channelhtml += '<p>' + channel.name + '<br /><span>' + channel.theme + '</span></p>';
           channelhtml += '</a></li>';  
@@ -256,11 +274,12 @@ function TicketManager() {
     });
   };
    
-  this.checkAdultCode = function() {
+  this.checkAdultCode = function(event) {
+      
     if ($('#text_adultcode').val() == window.manager.adultcode) { 
       window.manager.redirectToHls();
       //$('#span_adulterr').hide();
-      //window.manager.showContent();
+      window.manager.showContent();
       return; 
     }
     $('#span_adulterr').fadeIn();
@@ -286,7 +305,22 @@ function TicketManager() {
     $('#mainvideo').attr('src', hlsurl);
     $('#mainvideo').play();
   };
-    
+ 
+  this.showChannelTvGuide = function() {
+    for (key in window.manager.savedData.tvguide) {  
+      tvguide =  window.manager.savedData.tvguide[key];
+      if (key != $('#select_channel').val()) { continue; }
+      programhtml = '';
+      for (prkey in tvguide['programs']) {
+        var program = tvguide['programs'][prkey];
+        programhtml += '<li><p><span class="date">' + program['starttime'] + '</span>' + program['title'] + '</p></li>'; 
+      } 
+      $('#listview_main').html(programhtml);
+      $("#listview_main").listview("refresh");           
+    }     
+    $('#select_channel').selectmenu('refresh', true);
+    $('#select_day').selectmenu('refresh', true);  
+  }  
   this.getTvGuide = function() {
     day = $('#select_day').val();
      
@@ -304,29 +338,38 @@ function TicketManager() {
       dataType: "json",
       success: function(i){
         if (i.tokenok == '1') {
+          window.manager.savedData = i;
+            
           var channelhtml = '';
           var programhtml = '';  
-          var first = true;
+          var first = true; var tmp = 0;
+          $('#select_channel').empty();
           for (key in i.tvguide) {
             extra = '';
-            if (first) { extra = 'class="active"'; }
+            if (first) { extra = 'class="active"'; tmp = key; }
             
-            channelhtml += '<a ' + extra + ' href="#" title="">' + i.tvguide[key]['channel'] + '</a>';
+            $('#select_channel').append($('<option>', {
+                value: key,
+                text: i.tvguide[key]['channel']
+            }));    
+              
+            //channelhtml += '<a ' + extra + ' href="#" title="">' + i.tvguide[key]['channel'] + '</a>';
             
-            extra = '';
+            /*extra = '';
             if (first) { extra = ' active'; }
             programhtml += '<div class="tab' + extra + '"><ul>';  
             for (chkey in i.tvguide[key]['programs']) {
               var program = i.tvguide[key]['programs'][chkey];
               programhtml += '<li><p><span class="date">' + program['starttime'] + '</span>' + program['title'] + '</p></li>'; 
             }
-            programhtml += '</ul></div>';  
+            programhtml += '</ul></div>';  */
               
             first = false;  
           }
+          $('#select_channel').val(tmp);
+          window.manager.showChannelTvGuide();  
             
-            
-          $('.tabControl').html(channelhtml);
+          /*$('.tabControl').html(channelhtml);
           $('#channel_div').html(programhtml);
             
           $(".tabControl a").click(function(){
@@ -338,7 +381,7 @@ function TicketManager() {
     		$(".tab:eq("+number+")").show();
         
     		return false;
-  		  });
+  		  });*/
             
         }
         else {
