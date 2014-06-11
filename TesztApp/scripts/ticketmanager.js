@@ -8,12 +8,21 @@ function TicketManager() {
   this.preventLoginRedirect = false;
 
   this.myAlert = function(s) {
+      
       navigator.notification.alert(
             s,  // message
-            '',         // callback
+            null,         // callback
             'Info',            // title
             'Ok'                  // buttonName
       );
+      
+      /*navigator.notification.prompt(
+        'Please enter your name',  // message
+        null,                  // callback to invoke
+        'Registration',            // title
+        ['Ok','Exit'],             // buttonLabels
+        'Jane Doe'                 // defaultText
+    );*/
       //alert (s);
   }  
     
@@ -226,11 +235,13 @@ function TicketManager() {
         if (i.tokenok == '1') {
           window.manager.hlsurl = i.hls;
           if (i.adultcode != '') {
-    		window.localStorage.setItem("ittott_adultcode", i.adultcode);              
+            window.manager.adultcode = i.adultcode;  
+    		/*window.localStorage.setItem("ittott_adultcode", i.adultcode);              
             window.localStorage.setItem("ittott_adulthls", i.hls);              
-            window.manager.adultcode = i.adultcode;
+            window.manager.adultcode = i.adultcode;*/
             //window.manager.showAdultCode();
-            $.mobile.changePage( "lock.html", { role: "dialog" } );  
+            //$.mobile.changePage( "lock.html", { role: "dialog" } );  
+            window.manager.lockPrompt();  
           }
           else {
             window.manager.redirectToHls();
@@ -244,7 +255,24 @@ function TicketManager() {
         window.manager.showLogin();
       }
     });
-  };
+  };  
+  this.lockPrompt = function() {
+    navigator.notification.prompt(
+               'Írd be ide a gyerekzár kódot!',
+                window.manager.lockCallBack,    
+                'Gyerekzár',            
+                ['OK','Mégsem'],        
+                'Kód'                 
+            );          
+  }
+  this.lockCallBack = function(results) {
+    if (results.buttonIndex != 1) { return; }
+    if (results.input1 == window.manager.adultcode)  {
+      window.manager.redirectToHls();      
+      return;
+    }
+    window.manager.lockPrompt();
+  }
   
   this.doLogin = function() {
     var data = { 
@@ -284,6 +312,20 @@ function TicketManager() {
     }
     $('#span_adulterr').fadeIn();
   };
+  
+  this.startLogout = function(e) {
+    navigator.notification.confirm(
+        'Biztos ki akarsz lépni?',
+         window.manager.logoutCallback,            
+        'Megerősítés',   
+        'Igen,Nem'       
+    );
+    $('.buttonLogout').removeClass('ui-btn-active');  
+  }
+  
+  this.logoutCallback = function(buttonIndex) {
+    if (buttonIndex == 1) { window.manager.logOut(); }
+  }
   
   this.logOut = function() {
     window.manager.saveToken('');
