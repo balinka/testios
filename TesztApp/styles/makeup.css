@@ -1,0 +1,139 @@
+.ui-bar-a, .ui-footer-fixed .ui-btn, .buttonRefresh, .buttonChannelsView, .buttonLogout {
+    background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0, #FAEF1E),
+    color-stop(1, #FAD500)
+    ) !important;
+    background-image: -o-linear-gradient(bottom, #FAEF1E 0%, #FAD500 100%) !important;
+    background-image: -moz-linear-gradient(bottom, #FAEF1E 0%, #FAD500 100%) !important;
+    background-image: -webkit-linear-gradient(bottom, #FAEF1E 0%, #FAD500 100%) !important;
+    background-image: -ms-linear-gradient(bottom, #FAEF1E 0%, #FAD500 100%) !important;
+    background-image: linear-gradient(to bottom, #FAEF1E 0%, #FAD500 100%) !important;
+  border:1px solid #333333;
+  color:#000000 !important;
+  font-weight:700;
+  text-shadow:#FAEF1E 0 -1px 0 !important;
+}
+
+.logo {
+    background: url(../images/logo.png) no-repeat;
+    margin: 0 auto 20px auto;
+    width: 263px;  height: 56px;
+}
+
+html,body {height: 100%;}
+.pageLogin {  
+  background: #FAEF1E;
+  left: 0;  top: 0;
+  position: absolute;
+  width: 100%;  height: 100%;
+}
+.pageLogin .form {
+    height: 222px;
+    left: 20px;  top: 50%;  right: 20px;
+    margin: -111px 0 0 0;
+    position: absolute;    
+    text-align: center;
+}
+.pageLogin .form input {
+    font-size: 16px;
+    height: 40px !important;
+    padding: 0 !important;
+}
+.pageLogin .submit {
+    background: black;
+    border: 0;
+    color: white;
+    margin: 15px 0 !important;
+    padding: .4em 0;
+	width: 100%;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;    
+}
+.pageLogin a {
+    color: black !important;
+	font-size: 12px;
+    text-decoration: none;
+}
+.pageLogin .formContainer {position: relative;}
+.pageLogin .formContainer .number {
+    font-size: 16px;
+    left: 10px;  top: 0;
+    line-height: 42px;
+    position: absolute;
+    z-index: 100;
+}
+.pageLogin .formContainer input {padding-left: 36px !important;}
+
+.ui-listview .ui-icon-arrow-r {
+    background: url(../images/access_ok.png) no-repeat !important;
+    margin-top: -20px !important;
+	width: 40px !important;  height: 40px !important;
+}
+.ui-listview .locked .ui-icon-arrow-r {background: url(../images/access_denied.png) no-repeat !important;}
+
+.ui-footer-fixed .ui-btn-inner {padding-top: 40px !important;}
+
+.buttonChannelsView .ui-icon-calendar {
+    background: url(../images/programs_icon.png) no-repeat !important;
+    margin-left: -16px !important;
+	width: 32px !important;  height: 32px !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;    
+}
+
+.buttonLogout .ui-icon-power {
+    background: url(../images/logout_icon.png) no-repeat !important;
+    margin-left: -16px !important;
+	width: 32px !important;  height: 32px !important;   
+	-webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;     
+}
+
+.buttonChannelsList .ui-icon-calendar {
+    background: url(../images/tv_icon.png) no-repeat !important;
+    margin-left: -16px !important;
+	width: 32px !important;  height: 32px !important;   
+	-webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;     
+}
+
+.buttonRefresh .ui-icon-refresh {
+    background: url(../images/refresh_icon.png) no-repeat !important;
+    margin-left: -16px !important;
+	width: 32px !important;  height: 32px !important;  
+	-webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;     
+}
+
+
+.ui-listview .ui-li-desc {
+    font-size: 14px;  font-weight: bold;
+	margin-top: 12px !important;
+}
+.ui-listview .ui-li-thumb {
+    background: white;
+    margin-top: -40px;
+    padding: 15px 0;
+    top: 50%;  left: 10px;
+}
+
+.ui-listview a.ui-link-inherit {padding: 20px 15px 20px 100px !important;}
+
+.ui-listview .date {
+    background: gray;
+    color: white;
+    display: inline-block;
+    margin-right: 10px;
+    padding: 2px 3px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;       
+}

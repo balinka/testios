@@ -7,13 +7,13 @@ function TicketManager() {
   this.adultcode = '';
   this.preventLoginRedirect = false;
 
-  this.myAlert = function(s) {
+  this.myAlert = function(msg, title, okTitle) {
       
       navigator.notification.alert(
-            s,  // message
+            msg,  // message
             null,         // callback
-            'Info',            // title
-            'Ok'                  // buttonName
+            title,            // title
+            okTitle                  // buttonName
       );
       
       /*navigator.notification.prompt(
@@ -61,7 +61,13 @@ function TicketManager() {
     if (window.manager.hlsurl != '') { 
     	//window.localStorage.setItem("ittott_hlsurl", manager.hlsurl);      
         //window.open('video.html', '_self', 'location=no'); 
-        window.open(window.manager.hlsurl, '_blank', 'location=no,transitionstyle=fliphorizontal,closebuttoncaption=Vissza'); 
+        if(navigator.userAgent.toLowerCase().match(/ipad/)){
+        	window.open(window.manager.hlsurl, '_blank', 'location=no,transitionstyle=fliphorizontal,closebuttoncaption=Vissza a csatornákhoz'); 
+        }
+        else{
+            window.open(window.manager.hlsurl, '_self', 'location=no,transitionstyle=fliphorizontal,closebuttoncaption=Vissza'); 
+        }
+        //window.open(window.manager.hlsurl, '_system', 'location=no,transitionstyle=fliphorizontal,closebuttoncaption=Vissza'); 
     }
   };
   
@@ -104,7 +110,7 @@ function TicketManager() {
         for (chkey in theme.channels) {
           channel = theme.channels[chkey];
           
-          var onClick = 'onclick="javascript: window.manager.myAlert(\'Úgy tűnik, hogy bla blablabla bla blablabla.\'); return false;"';  
+            var onClick = 'onclick="javascript: window.manager.myAlert(\'Úgy tűnik a választott csatorna jelenleg nem szerepel az előfizetésedben. Kérjük válassz másikat!\', \'Jogosultsági hiba\', \'Ok\'); return false;"';  
           var liClass = 'class="locked"';
           if (channel['access'] == '1') {
             onClick = 'onclick="javascript: window.manager.playChannel(\'' + channel.id + '\'); return false;"';       
@@ -112,7 +118,7 @@ function TicketManager() {
           }
             
           //channelhtml += '<li onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')">';
-          channelhtml += '<li><a href="#" ' + liClass + ' ' + onClick + '>';
+          channelhtml += '<li ' + liClass + '><a href="#" ' + onClick + '>';
           channelhtml += '<img src="' + channel.img + '" />';
           channelhtml += '<p>' + channel.name + '<br /><span>' + channel.theme + '</span></p>';
           channelhtml += '</a></li>';  
@@ -258,11 +264,11 @@ function TicketManager() {
   };  
   this.lockPrompt = function() {
     navigator.notification.prompt(
-               'Írd be ide a gyerekzár kódot!',
+               new String(),
                 window.manager.lockCallBack,    
                 'Gyerekzár',            
-                ['OK','Mégsem'],        
-                'Kód'                 
+                ['OK','Mégsem'],
+                new String()
             );          
   }
   this.lockCallBack = function(results) {
@@ -277,7 +283,7 @@ function TicketManager() {
   this.doLogin = function() {
     var data = { 
       do : 'userLogin',
-      identifier : $('#text_telephone').val(),
+      identifier : '36' + $('#text_telephone').val(),
       password : $('#text_password').val()
     };
     $.ajax({
@@ -291,9 +297,11 @@ function TicketManager() {
           $('#span_loginerr').hide();
           //window.manager.checkChannels();
           window.manager.showContent();
+            //window.manager.showTvGuide();
         }
         else {
-          $('#span_loginerr').fadeIn();
+          //$('#span_loginerr').fadeIn();
+          window.manager.myAlert('Hibás bejelentkezési adatok, kérjük ellenőrizd!', 'Sikertelen belépés!', 'Ok');
         }
       },
       error: function(e1, er, err) {
@@ -315,10 +323,10 @@ function TicketManager() {
   
   this.startLogout = function(e) {
     navigator.notification.confirm(
-        'Biztos ki akarsz lépni?',
+        'Biztos kijelentkezel az alkalmazásból?',
          window.manager.logoutCallback,            
-        'Megerősítés',   
-        'Igen,Nem'       
+        'Kilépés',   
+        'Igen,Mégsem'       
     );
     $('.buttonLogout').removeClass('ui-btn-active');  
   }
