@@ -48,7 +48,7 @@
           
     
     <section class="main">
-        <ul data-role="listview" id="listview_main">
+        <ul data-role="listview" id="listview_main" class="tvguide">
     
 </ul>
       <!--<div class="tabControl">
@@ -85,6 +85,7 @@
         $(document).ready(function(){
 
             window.manager = new TicketManager();
+            window.manager.addIphoneBodyClass();
             window.manager.token = window.localStorage.getItem("ittott_token");
             window.manager.getTvGuide();    
             $('.buttonChannelsList').click(window.manager.showContent);

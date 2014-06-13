@@ -33,9 +33,9 @@
         <div class="logo"></div>
         <div class="formContainer">
             <span class="number">+36</span>
-        	<input type="text" placeholder="Telefonszám" id="text_telephone" value="303925937" />
+        	<input type="text" placeholder="Telefonszám" id="text_telephone" value="" />
         </div>
-        <input type="password" placeholder="Jelszó" id="text_password" value="1234" />
+        <input type="password" placeholder="Jelszó" id="text_password" value="" />
         <span id="span_loginerr" style="display: none;">Sikertelen bejelentkezés!</span>
         <input class="submit" type="button" value="Belépés" data-role="none" id="button_login" />
         
@@ -58,6 +58,7 @@
         
         $(document).ready(function(){
             window.manager = new TicketManager();
+            window.manager.addIphoneBodyClass();
             window.manager.preventLoginRedirect = true;
             window.manager.checkToken();    
             $('#button_login').click(window.manager.doLogin);

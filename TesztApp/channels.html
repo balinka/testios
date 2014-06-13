@@ -80,12 +80,14 @@
         $(document).ready(function(){
 
             window.manager = new TicketManager();
+            window.manager.addIphoneBodyClass();
             window.manager.token = window.localStorage.getItem("ittott_token");
             window.manager.checkChannels();    
             $('.buttonLogout').click(window.manager.startLogout);
             $('.buttonChannelsView').click(window.manager.showTvGuide);
             $('.buttonRefresh').click(window.manager.showContent);
             $('#select_theme').change(window.manager.changeChannelDiv);
+            
             
         });
 

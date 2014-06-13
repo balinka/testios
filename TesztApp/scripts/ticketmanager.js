@@ -7,6 +7,12 @@ function TicketManager() {
   this.adultcode = '';
   this.preventLoginRedirect = false;
 
+  this.addIphoneBodyClass = function() {
+    if (!navigator.userAgent.toLowerCase().match(/ipad/)) {
+      $('.page').addClass('iphone');
+    }    
+  }  
+    
   this.myAlert = function(msg, title, okTitle) {
       
       navigator.notification.alert(
@@ -119,6 +125,9 @@ function TicketManager() {
             
           //channelhtml += '<li onclick="javascript: window.manager.playChannel(\'' + channel.id + '\')">';
           channelhtml += '<li ' + liClass + '><a href="#" ' + onClick + '>';
+          if (!navigator.userAgent.toLowerCase().match(/ipad/)) {
+            channel.img = channel.img.replace('100_100', '50_50');
+          }
           channelhtml += '<img src="' + channel.img + '" />';
           channelhtml += '<p>' + channel.name + '<br /><span>' + channel.theme + '</span></p>';
           channelhtml += '</a></li>';  
@@ -297,7 +306,7 @@ function TicketManager() {
           $('#span_loginerr').hide();
           //window.manager.checkChannels();
           window.manager.showContent();
-            //window.manager.showTvGuide();
+           // window.manager.showTvGuide();
         }
         else {
           //$('#span_loginerr').fadeIn();
