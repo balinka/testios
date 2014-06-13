@@ -31,9 +31,9 @@ html,body {height: 100%;}
   width: 100%;  height: 100%;
 }
 .pageLogin .form {
-    height: 222px;
+    height: 265px;
     left: 20px;  top: 50%;  right: 20px;
-    margin: -111px 0 0 0;
+    margin: -132px 0 0 0;
     position: absolute;    
     text-align: center;
 }
@@ -115,9 +115,14 @@ html,body {height: 100%;}
 
 
 .ui-listview .ui-li-desc {
-    font-size: 14px;  font-weight: bold;
+    font-size: 18px;  font-weight: bold;
 	margin-top: 12px !important;
 }
+
+.ui-listview .ui-li-desc span{
+    font-size: 14px;  font-weight: normal;
+}
+
 .ui-listview .ui-li-thumb {
     background: white;
     margin-top: -40px;
@@ -137,3 +142,40 @@ html,body {height: 100%;}
   -moz-border-radius: 5px;
   border-radius: 5px;       
 }
+
+.pageLogin .form a {text-shadow: none;}
+
+/*iPhone*/
+.iphone.pageLogin .form {
+    height: 250px;
+    margin-top: -125px;
+}
+
+.iphone .logo {
+    background-size: 100% auto;
+    margin-bottom: 5px;
+    width: 213px;
+}
+
+.iphone .ui-listview .ui-li-thumb {
+    padding: 5px 0 !important;
+    margin-top: -22px !important;
+}
+
+.iphone .ui-listview a.ui-link-inherit {padding: 10px 5px 0 68px !important;}
+
+.iphone .ui-listview .ui-li-desc {
+    font-size: 14px !important;
+    font-weight: bold !important;
+	margin: 6px 0 8px 0 !important;
+}
+
+.iphone .ui-listview .ui-li-desc span{
+    font-size: 12px !important;
+    font-weight: normal !important;
+}
+
+
+
+.iphone .ui-listview.tvguide .ui-li-desc {font-size: 12px !important;}
+.iphone .ui-listview.tvguide .ui-li-static {padding: 4px 15px;}
